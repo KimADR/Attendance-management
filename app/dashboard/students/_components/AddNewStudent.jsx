@@ -14,13 +14,13 @@ import { useForm } from 'react-hook-form';
 import GlobalApi from '@/app/_services/GlobalApi';
 import { toast } from 'sonner';
 
-function AddNewStudent() {
+function AddNewStudent({ refreshData }) {
     const [open, setOpen] = useState(false);
     const [grades, setGrades]=useState([]);
     const {
         register,
         handleSubmit,
-        watch,
+        reset,
         formState: { errors },
     } = useForm();
 
@@ -42,8 +42,14 @@ function AddNewStudent() {
             {
                 setOpen(false);
                 toast('New Student Added with success!')
+                refreshData(); // Call refreshData to update the student list
+                reset(); // Reset the form state
             }
         });
+    };
+    const handleClose = () => {
+        setOpen(false);
+        reset(); // Reset the form state when the dialog is closed
     };
 
     return (
@@ -87,7 +93,7 @@ function AddNewStudent() {
                                 {...register('address')} />
                         </div>
                         <div className='flex gap-3 items-center justify-end mt-5'>
-                            <Button onClick={() => setOpen(false)} variant='ghost'>Cancel</Button>
+                            <Button onClick={handleClose} variant='ghost'>Cancel</Button>
                             <Button
                                 type="submit"
                             >Save</Button>

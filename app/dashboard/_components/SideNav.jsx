@@ -3,7 +3,8 @@ import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { GraduationCap, Hand, LayoutIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { usePathname } from "next/navigation";
+import React, { useEffect } from "react";
 
 function SideNav() {
   const { user } = useKindeBrowserClient();
@@ -35,6 +36,11 @@ function SideNav() {
     },
   ];
 
+  const path=usePathname();
+  useEffect(() => {
+    console.log(path);
+  }, [path]);
+
   return (
     <div className="border shadow-md h-screen p-5">
       <Image src="/logo.svg" className="ml-20" width={120} height={50} alt="logo" />
@@ -43,8 +49,8 @@ function SideNav() {
       {menulist.map((menu) => (
        <Link href={menu.path} key={menu.id}>
         <h2
-          className="flex items-center gap-3 text-md p-4 hover:bg-slate-700 rounded-lg cursor-pointer
-                text-slate-500 hover:text-white"          
+          className={`flex items-center gap-6 text-md p-4  rounded-lg cursor-pointer
+                text-slate-500 hover:text-black ${path==menu.path&&'bg-gray-700 text-white'}`}        
         >
           <menu.icon />
           {menu.name}
